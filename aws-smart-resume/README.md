@@ -34,40 +34,38 @@ This project runs 100% within the AWS Free Tier.
 
 ---
 
-##  Deployment Instructions
+## Deployment Instructions
 
-### Prerequisites
-*   AWS Account
-*   Node.js installed (for local dev/zipping)
-*   AWS CLI (optional, can use Console)
+You have two options for deployment:
 
-### Step 1: Backend Deployment
-1.  Navigate to `backend/lambda`.
-2.  Run `npm install` (to get UUID/SDK if needed, though AWS provides SDK).
-    *   *Note: The code uses standard AWS SDK v3.*
-3.  Zip the contents of `backend/lambda` (ensure `handler.js` is at root of zip).
-4.  **AWS Lambda**: Create function `SmartResumeTracker` (Node.js 18). Upload Zip.
-5.  **IAM**: Give it permissions (see `infra/iam.md`).
-6.  **Env Variables**: Set `TABLE_NAME=SmartResumeVisits`, `SNS_TOPIC_ARN=...`.
+### Option A: Automated Deployment (PowerShell)
+For a quick setup on Windows, use the automated guide:
+ **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)**
 
-### Step 2: Infrastructure Setup
-Follow the guides in `infra/` folder in order:
-1.  [DynamoDB](infra/dynamodb.md)
-2.  [SNS](infra/sns.md)
-3.  [API Gateway](infra/api-gateway.md) -> **Copy the API URL**.
+### Option B: Manual Setup
+If you prefer to configure resources manually via the AWS Console, follow the consolidated infrastructure guide:
+ **[infra/INFRASTRUCTURE_SETUP.md](infra/INFRASTRUCTURE_SETUP.md)**
+
+This guide covers:
+1.  DynamoDB Table
+2.  SNS Topic & Subscription
+3.  API Gateway (HTTP API)
+4.  Lambda Function & IAM Role
+5.  S3 Bucket & Static Hosting
+6.  CloudFront CDN (Optional)
 
 ### Step 3: Frontend Config
+Once your API is deployed:
 1.  Open `frontend/config.js`.
 2.  Replace the URL with your API Gateway Invoke URL.
 
 ### Step 4: Hosting
-1.  [S3 Setup](infra/s3-setup.md).
-2.  [CloudFront Setup](infra/cloudfront.md).
-3.  **Upload** `frontend/` files to S3 bucket.
+1.  Upload `frontend/` files to your S3 bucket.
+2.  Ensure permissions are set public (or via CloudFront).
 
 ### Step 5: Test
-1.  Open your CloudFront URL.
-2.  Check your email for the "New Visit" alert! 🚀
+1.  Open your website URL.
+2.  Check your email for the "New Visit" alert!
 
 ---
 
