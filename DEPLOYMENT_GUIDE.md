@@ -19,8 +19,9 @@ $REGION = "us-east-1" # Change if needed
 ```powershell
 aws dynamodb create-table `
     --table-name $TABLE_NAME `
-    --attribute-definitions AttributeName=sessionId,AttributeType=S `
+    --attribute-definitions AttributeName=sessionId,AttributeType=S AttributeName=visitorId,AttributeType=S `
     --key-schema AttributeName=sessionId,KeyType=HASH `
+    --global-secondary-indexes "IndexName=VisitorIndex,KeySchema=[{AttributeName=visitorId,KeyType=HASH}],Projection={ProjectionType=KEYS_ONLY}" `
     --billing-mode PAY_PER_REQUEST `
     --region $REGION
 ```
@@ -65,12 +66,13 @@ Remove-Item trust-policy.json
 **Important:** We must zip the *contents* of the lambda folder, not the folder itself.
 ```powershell
 # Install dependencies
-Push-Location aws-smart-resume/backend/lambda
+Push-Location backend/lambda
 npm install
-
-# Zip the function correctly (files at root)
-Compress-Archive -Path * -DestinationPath ../../../function.zip -Force
 Pop-Location
+
+# Zip the function using the robust Python script (Ensures correct structure)
+# If you don't have Python, ensure you zip the *contents* of backend/lambda, not the folder.
+python backend/lambda/zipper_project.py
 
 # Wait for role to propagate (sleep 10s)
 Start-Sleep -Seconds 10
@@ -99,12 +101,18 @@ $API_ID = aws apigatewayv2 create-api `
     --name "SmartResumeAPI" `
     --protocol-type HTTP `
     --target $LAMBDA_ARN `
+    --question-selection-expression '$request.body.action' `
     --output text --query ApiId `
     --region $REGION
 
+# Create Integration
+$INTEGRATION_ID = aws apigatewayv2 get-integrations --api-id $API_ID --query "Items[0].IntegrationId" --output text --region $REGION
+
+# Add Routes Explicitly (Critical for correct functionality)
+aws apigatewayv2 create-route --api-id $API_ID --route-key "POST /track" --target "integrations/$INTEGRATION_ID" --region $REGION
+aws apigatewayv2 create-route --api-id $API_ID --route-key "GET /stats" --target "integrations/$INTEGRATION_ID" --region $REGION
+
 # Permission for API Gateway to invoke Lambda
-# Note: "source-arn" is often tricky to get exactly right in CLI without Account ID. 
-# We will use a broader permission or rely on the integration.
 aws lambda add-permission `
     --function-name $LAMBDA_NAME `
     --statement-id API_Gateway_Invoke `
@@ -123,7 +131,7 @@ Write-Host "✅ API Endpoint: https://$API_ID.execute-api.$REGION.amazonaws.com"
 ### Run Locally (Test)
 ```powershell
 # Requires Node.js
-npx http-server aws-smart-resume/frontend
+npx http-server frontend
 ```
 
 ### Deploy to S3 (Public Website)
@@ -159,7 +167,7 @@ aws s3api put-bucket-policy --bucket $BUCKET_NAME --policy file://bucket_policy.
 Remove-Item bucket_policy.json
 
 # 4. Sync Files
-aws s3 sync aws-smart-resume/frontend "s3://$BUCKET_NAME"
+aws s3 sync frontend "s3://$BUCKET_NAME"
 
 Write-Host "🌍 Website URL: http://$BUCKET_NAME.s3-website-$REGION.amazonaws.com"
 ```

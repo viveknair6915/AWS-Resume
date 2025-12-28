@@ -5,22 +5,25 @@
 
 // Generate a random Session ID
 const generateUUID = () => {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
         return v.toString(16);
     });
 };
 
-const SESSION_ID = localStorage.getItem('resume_session_id') || generateUUID();
-localStorage.setItem('resume_session_id', SESSION_ID);
+// Aggressive Tracking: New Session ID on EVERY load
+const SESSION_ID = generateUUID();
+// Do not save SESSION_ID to storage anymore.
 
-const IS_REPEAT_VISIT = localStorage.getItem('resume_visited') === 'true';
-localStorage.setItem('resume_visited', 'true');
+// Visitor ID: Identify the "person" regardless of tab/session. Persist forever.
+const VISITOR_ID = localStorage.getItem('resume_visitor_id') || generateUUID();
+localStorage.setItem('resume_visitor_id', VISITOR_ID);
 
 // Tracking State
 let trackingData = {
     sessionId: SESSION_ID,
-    isRepeatVisit: IS_REPEAT_VISIT,
+    visitorId: VISITOR_ID,
+    isRepeatVisit: false, // Always treat as fresh session for the aggressive mailer
     startTime: new Date().toISOString(),
     referrer: document.referrer || 'direct',
     userAgent: navigator.userAgent,
@@ -74,7 +77,7 @@ const updateScrollDepth = () => {
     const docHeight = document.body.offsetHeight;
     const winHeight = window.innerHeight;
     const scrollPercent = (scrollTop + winHeight) / docHeight * 100;
-    
+
     // Track milestones
     [25, 50, 75, 100].forEach(milestone => {
         if (scrollPercent >= milestone && trackingData.scrollDepth < milestone) {
@@ -98,14 +101,14 @@ const sendData = (isFinal = false) => {
     // Update final times
     const now = Date.now();
     trackingData.timeSpent = (now - new Date(trackingData.startTime).getTime()) / 1000;
-    
+
     // Close any open section timers
     Object.keys(sectionTimers).forEach(id => {
         if (sectionTimers[id].start) {
             const duration = (now - sectionTimers[id].start) / 1000;
             trackingData.sectionsViewed[id] += duration;
             // Don't reset start here if not final, as we are still viewing
-            if (isFinal) sectionTimers[id].start = null; 
+            if (isFinal) sectionTimers[id].start = null;
             else sectionTimers[id].start = now; // Reset start to now for next interval
         }
     });
@@ -141,3 +144,4 @@ window.addEventListener('beforeunload', () => sendData(true));
 
 // Initial load event
 console.log('AWS Smart Resume Tracker Initialized');
+sendData(false); // Immediate pulse for "First View" alert

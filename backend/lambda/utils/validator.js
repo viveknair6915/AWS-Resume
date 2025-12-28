@@ -3,6 +3,7 @@ export const validatePayload = (body) => {
         const data = JSON.parse(body);
 
         if (!data.sessionId) return { valid: false, error: 'Missing sessionId' };
+        if (!data.visitorId) return { valid: false, error: 'Missing visitorId' };
         if (typeof data.scrollDepth !== 'number') return { valid: false, error: 'Invalid scrollDepth' };
 
         return { valid: true, data };

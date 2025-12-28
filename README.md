@@ -7,15 +7,17 @@
 *   **Serverless Hosting**: HTLM5 Resume hosted on S3 + CloudFront (CDN) for global low-latency.
 *   **Real-time Tracking**: Detects Page View, Scroll Depth (25%, 50%, 100%), and Section Visibility (e.g., Recruiter spent 20s on "Projects").
 *   **Geolocation**: Identifies the Country and City of the visitor.
+*   **Visitor Dashboard**: A password-protected (optional) analytics page to view traffic stats and charts.
 *   **Instant Alerts**: Sends an SNS Email immediately when someone opens the resume (First Visit).
+*   **Slack Integration**: Optional webhook integration to get alerts directly in a Slack channel.
 *   **High Engagement Alert**: Triggers a second alert if they stay longer than 90 seconds.
 
 ##  Architecture
 
 1.  **Frontend**: Static Website (S3) served via CloudFront.
 2.  **Tracking**: `tracker.js` collects events and sends `POST` beacons.
-3.  **API**: API Gateway (HTTP) receives payloads.
-4.  **Backend**: AWS Lambda (Node.js 18) processes data.
+3.  **API**: API Gateway (HTTP) receives payloads and serves stats (`GET /stats`).
+4.  **Backend**: AWS Lambda (Node.js 18) processes data and generates charts JSON.
 5.  **Database**: DynamoDB (On-Demand) stores session logs.
 6.  **Notifications**: SNS publishes email alerts.
 
@@ -44,7 +46,7 @@ For a quick setup on Windows, use the automated guide:
 
 ### Option B: Manual Setup
 If you prefer to configure resources manually via the AWS Console, follow the consolidated infrastructure guide:
- **[infra/INFRASTRUCTURE_SETUP.md](infra/INFRASTRUCTURE_SETUP.md)**
+ **[INFRASTRUCTURE_SETUP.md](INFRASTRUCTURE_SETUP.md)**
 
 This guide covers:
 1.  DynamoDB Table
@@ -61,11 +63,21 @@ Once your API is deployed:
 
 ### Step 4: Hosting
 1.  Upload `frontend/` files to your S3 bucket.
-2.  Ensure permissions are set public (or via CloudFront).
+2.  Enable Static Hosting in S3 Properties.
 
-### Step 5: Test
+### Step 5: Secure with CloudFront (HTTPS)
+To fix "Not Secure" warnings, create a CloudFront distribution pointing to your S3 bucket.
+*   Origin: Your S3 Bucket
+*   Viewer Protocol Policy: Redirect HTTP to HTTPS
+
+### Step 6: Test
 1.  Open your website URL.
 2.  Check your email for the "New Visit" alert!
+
+---
+
+##  Live Demo
+**Reference Implementation:** [https://dlgh3w0a41apx.cloudfront.net](https://dlgh3w0a41apx.cloudfront.net)
 
 ---
 

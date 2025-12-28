@@ -10,7 +10,11 @@ This document consolidates the setup instructions for all AWS resources required
     *   Name: `SmartResumeVisits`
     *   Partition Key: `sessionId` (String)
     *   Sort Key: None
-2.  **Capacity Settings**
+    *   **Global Secondary Index (GSI)**:
+        *   Index Name: `VisitorIndex`
+        *   Partition Key: `visitorId` (String)
+        *   Projection: `KEYS_ONLY` (or Include `lastUpdated`, `city`, `country`)
+3.  **Capacity Settings**
     *   **On-demand** (Pay per request) - Falls under Free Tier usage limits.
 3.  **Tags**
     *   Project: `AWS-Smart-Resume`
@@ -40,8 +44,11 @@ Create a role with the following policy connected to your Lambda function:
     "Statement": [
         {
             "Effect": "Allow",
-            "Action": ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:UpdateItem"],
-            "Resource": "arn:aws:dynamodb:*:*:table/SmartResumeVisits"
+            "Action": ["dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:UpdateItem", "dynamodb:Query", "dynamodb:Scan"],
+            "Resource": [
+                "arn:aws:dynamodb:*:*:table/SmartResumeVisits",
+                "arn:aws:dynamodb:*:*:table/SmartResumeVisits/index/*"
+            ]
         },
         {
             "Effect": "Allow",
@@ -66,11 +73,11 @@ Create a role with the following policy connected to your Lambda function:
     *   Name: `SmartResumeAPI`
     *   Integration: Lambda (`SmartResumeTracker`)
 2.  **Routes**
-    *   Method: `POST`
-    *   Path: `/track`
+    *   **Route 1**: `POST /track` (For recording visits)
+    *   **Route 2**: `GET /stats` (For dashboard analytics)
 3.  **CORS Configuration**
     *   Origin: `*` (or your CloudFront/S3 URL)
-    *   Methods: `POST, OPTIONS`
+    *   Methods: `POST, GET, OPTIONS`
     *   Headers: `content-type`
 4.  **Endpoint**:
     *   Copy the URL => Update `frontend/config.js`.
