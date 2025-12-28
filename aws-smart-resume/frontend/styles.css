@@ -1,0 +1,451 @@
+:root {
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --secondary: #ec4899;
+    --bg-dark: #0f172a;
+    --bg-card: #1e293b;
+    --text-light: #f1f5f9;
+    --text-muted: #94a3b8;
+    --gradient: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+    --glass: rgba(30, 41, 59, 0.7);
+    --border: rgba(255, 255, 255, 0.1);
+    --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bg-card);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+.resume-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 40px;
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Glow Effects */
+.resume-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(79, 70, 229, 0.1) 0%, transparent 50%);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+}
+
+h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 25px;
+}
+
+.contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.contact-info a {
+    color: var(--text-light);
+    text-decoration: none;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.contact-info a:hover {
+    background: var(--primary);
+    transform: translateY(-2px);
+    border-color: var(--primary);
+    box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+}
+
+/* Section Common */
+.section {
+    margin-bottom: 50px;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    color: var(--text-light);
+    margin-bottom: 30px;
+    position: relative;
+    padding-left: 20px;
+    border-left: 4px solid var(--primary);
+}
+
+/* Experience & Education Items */
+.experience-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 25px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    transition: transform 0.3s ease;
+}
+
+.experience-item:hover {
+    transform: translateX(10px);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.job-header h4 {
+    font-size: 1.2rem;
+    color: var(--text-light);
+}
+
+.company {
+    color: var(--secondary);
+    font-weight: 600;
+}
+
+.date {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 4px 12px;
+    border-radius: 12px;
+}
+
+ul {
+    list-style-position: inside;
+    color: var(--text-muted);
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+/* Skills Grid */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.skill-category {
+    background: var(--bg-card);
+    padding: 25px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+}
+
+.skill-category h4 {
+    color: var(--primary);
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+}
+
+.skill-category ul {
+    list-style: none;
+}
+
+.skill-category li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.skill-category i {
+    color: var(--secondary);
+    width: 20px;
+}
+
+/* Projects */
+.project-card {
+    background: var(--bg-card);
+    padding: 30px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    border-color: var(--primary);
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.tech-tag {
+    font-size: 0.8rem;
+    color: var(--primary);
+    background: rgba(79, 70, 229, 0.1);
+    padding: 4px 8px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.project-link {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 15px;
+    padding: 8px 16px;
+    background: var(--primary);
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.project-link:hover {
+    background: var(--primary-dark);
+}
+
+/* Certifications List */
+.cert-list {
+    list-style: none;
+}
+
+.cert-list li {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cert-list i {
+    color: #fbbf24;
+    font-size: 1.2rem;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Download Button */
+.download-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--gradient);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(236, 72, 153, 0.4);
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 100;
+    border: none;
+    font-size: 1.2rem;
+}
+
+.download-btn:hover {
+    transform: scale(1.1) rotate(-10deg);
+}
+
+/* Initial Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .resume-container {
+        padding: 20px;
+        margin: 0;
+        border-radius: 0;
+        border: none;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .contact-info {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .job-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+
+    .resume-container {
+        box-shadow: none;
+        border: none;
+        padding: 0;
+        margin: 0;
+        max-width: 100%;
+    }
+
+    .download-btn {
+        display: none;
+    }
+
+    h1 {
+        -webkit-text-fill-color: black;
+        background: none;
+        color: black;
+    }
+
+    .contact-info a {
+        background: none;
+        color: black;
+        border: none;
+        padding: 0;
+        margin-right: 15px;
+        box-shadow: none;
+    }
+
+    .section-title {
+        border-left-color: black;
+        color: black;
+    }
+
+    .section {
+        animation: none;
+        margin-bottom: 20px;
+    }
+
+    .experience-item,
+    .project-card,
+    .skill-category,
+    .cert-list li {
+        background: none;
+        border: none;
+        padding: 0;
+        margin-bottom: 15px;
+        color: black;
+    }
+
+    .project-link {
+        display: none;
+    }
+
+    /* Hide buttons in print */
+    .company,
+    .tech-tag,
+    i {
+        color: black !important;
+        border-color: black !important;
+        background: none !important;
+    }
+
+    a {
+        text-decoration: none;
+        color: black !important;
+    }
+
+    * {
+        color: black !important;
+        text-shadow: none !important;
+        box-shadow: none !important;
+    }
+}
