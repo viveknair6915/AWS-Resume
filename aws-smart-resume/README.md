@@ -2,10 +2,7 @@
 
 **A "Zero-Cost" Serverless Resume that tracks who views it, where they are from, and exactly what they read.**
 
-![Architecture](diagrams/architecture.png)
-*(Note: Use a tool like draw.io to generate the diagram based on the description below)*
-
-## 🚀 Features
+##  Features
 
 *   **Serverless Hosting**: HTLM5 Resume hosted on S3 + CloudFront (CDN) for global low-latency.
 *   **Real-time Tracking**: Detects Page View, Scroll Depth (25%, 50%, 100%), and Section Visibility (e.g., Recruiter spent 20s on "Projects").
@@ -13,7 +10,7 @@
 *   **Instant Alerts**: Sends an SNS Email immediately when someone opens the resume (First Visit).
 *   **High Engagement Alert**: Triggers a second alert if they stay longer than 90 seconds.
 
-## 🏗 Architecture
+##  Architecture
 
 1.  **Frontend**: Static Website (S3) served via CloudFront.
 2.  **Tracking**: `tracker.js` collects events and sends `POST` beacons.
@@ -22,7 +19,7 @@
 5.  **Database**: DynamoDB (On-Demand) stores session logs.
 6.  **Notifications**: SNS publishes email alerts.
 
-## 💰 "Zero Cost" Analysis
+## "Zero Cost" Analysis
 
 This project runs 100% within the AWS Free Tier.
 
@@ -37,7 +34,7 @@ This project runs 100% within the AWS Free Tier.
 
 ---
 
-## 🛠 Deployment Instructions
+##  Deployment Instructions
 
 ### Prerequisites
 *   AWS Account
@@ -74,7 +71,7 @@ Follow the guides in `infra/` folder in order:
 
 ---
 
-## 🧠 Interview Explanation
+## Interview Explanation
 
 **"Why did you build this?"**
 > "I wanted to demonstrate full-stack cloud competency. Instead of just listing 'AWS' as a skill, I used AWS to build the resume itself, adding observability to understand user engagement—just like we would for a production product."

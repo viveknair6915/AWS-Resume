@@ -3,7 +3,7 @@
 These commands will deploy your project using the **AWS CLI** on Windows.
 Ensure you have ran `aws configure` before starting.
 
-## 1️⃣ Setup Environment Variables
+## 1️ Setup Environment Variables
 Run this block to set names for your resources:
 ```powershell
 $SUFFIX = Get-Random -Maximum 9999
@@ -13,7 +13,7 @@ $LAMBDA_NAME = "SmartResumeTracker"
 $REGION = "us-east-1" # Change if needed
 ```
 
-## 2️⃣ Backend Deployment
+## 2️ Backend Deployment
 
 ### Create DynamoDB Table
 ```powershell
@@ -91,7 +91,7 @@ Remove-Item function.zip
 
 ---
 
-## 3️⃣ API Gateway Setup (HTTP API)
+## 3️ API Gateway Setup (HTTP API)
 *Note: Doing this via CLI is verbose. The Console is easier, but here is the command:*
 ```powershell
 # Create API
@@ -118,7 +118,7 @@ Write-Host "✅ API Endpoint: https://$API_ID.execute-api.$REGION.amazonaws.com"
 
 ---
 
-## 4️⃣ Frontend Deployment
+## 4️ Frontend Deployment
 
 ### Run Locally (Test)
 ```powershell
@@ -165,7 +165,7 @@ Write-Host "🌍 Website URL: http://$BUCKET_NAME.s3-website-$REGION.amazonaws.c
 ```
 
 ---
-## 🧹 Cleanup (Optional)
+##  Cleanup (Optional)
 To delete everything:
 ```powershell
 aws lambda delete-function --function-name $LAMBDA_NAME
