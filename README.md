@@ -4,11 +4,11 @@
 
 | **Live Resume** | **Visitor Dashboard** |
 | :---: | :---: |
-| ![Resume](screenshots/resume_home.png) | ![Dashboard](screenshots/dashboard_overview.png) |
+| ![Resume](ScreenShots/resume_home.png) | ![Dashboard](ScreenShots/dashboard_overview.png) |
 | *Hosted on S3 + CloudFront* | *Real-time Analytics* |
 
 ### 🕵️‍♂️ Detailed Activity Log
-![Activity Log](screenshots/dashboard_activity.png)
+![Activity Log](ScreenShots/dashboard_activity.png)
 *See every visit, device type, and location in real-time.*
 
 ##  Features
