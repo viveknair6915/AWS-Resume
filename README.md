@@ -2,6 +2,15 @@
 
 **A "Zero-Cost" Serverless Resume that tracks who views it, where they are from, and exactly what they read.**
 
+| **Live Resume** | **Visitor Dashboard** |
+| :---: | :---: |
+| ![Resume](screenshots/resume_home.png) | ![Dashboard](screenshots/dashboard_overview.png) |
+| *Hosted on S3 + CloudFront* | *Real-time Analytics* |
+
+### 🕵️‍♂️ Detailed Activity Log
+![Activity Log](screenshots/dashboard_activity.png)
+*See every visit, device type, and location in real-time.*
+
 ##  Features
 
 *   **Serverless Hosting**: HTLM5 Resume hosted on S3 + CloudFront (CDN) for global low-latency.
